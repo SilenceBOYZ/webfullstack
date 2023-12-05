@@ -8,9 +8,7 @@ let initWebRoutes = (app) => {
   router.get('/', homeController.getHomePage);
   router.get('/about', getAboutPage.getAboutPage);
   
-
   //rest api
-
   return app.use("/", router);
   // sẽ sử dụng các router được định nghĩa
 }

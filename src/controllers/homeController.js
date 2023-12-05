@@ -9,9 +9,8 @@ let getHomePage = async (req, res) => {
   } catch (e) {
     console.log(e);
   }
-
 }
-
+// new
 let getAboutPage = (req, res) => {
   return res.render('test/about.ejs');
 }
