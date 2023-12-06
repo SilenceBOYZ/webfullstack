@@ -10,8 +10,8 @@ let createNewUser = async (data) => {
       await db.User.create({
         email: data.email,
         password: hashPasswordFromBrcypt,
-        firstName: data.firstname,
-        lastName: data.lastname,
+        firstName: data.firstName,
+        lastName: data.lastName,
         address: data.address,
         phonenumber: data.phonenumber,
         gender: data.gender === '1' ? true : false,
@@ -22,7 +22,6 @@ let createNewUser = async (data) => {
       reject(e);
     }
   })
-
 }
 
 let hashUserPassword = (password) => {
@@ -36,6 +35,18 @@ let hashUserPassword = (password) => {
   });
 }
 
+let getAllUser = () => {
+  return new Promise( async (resolve, reject) => {
+    try {
+      let users = await db.User.findAll({raw: true});
+      resolve(users);
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
 module.exports = {
   createNewUser: createNewUser,
+  getAllUser: getAllUser,
 }
