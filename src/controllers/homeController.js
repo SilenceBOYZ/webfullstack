@@ -64,7 +64,6 @@ let deleteCRUD = async (req, res) => {
   } else {
     return res.send("User not found")
   }
-
 }
 
 module.exports = {
