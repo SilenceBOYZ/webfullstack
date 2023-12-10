@@ -8,23 +8,23 @@ let handleUserLogin = (email, password) => {
       let isExist = await checkUserEmail(email);
       if (isExist) {
         let user = await db.User.findOne({
-          where: {email:email},
+          where: { email: email },
           raw: true,
-          attributes: ['email','roleId', 'password'],
+          attributes: ['email', 'roleId', 'password'],
         });
-        if(user) {
+        if (user) {
           let check = await bcrypt.compareSync(password, user.password);
-          if(check) {
+          if (check) {
             userData.errCode = 0;
-            userData.errMessage= 'Ok';
+            userData.errMessage = 'Ok';
             console.log(user);
             delete user.password;
             userData.user = user;
-          }else {
+          } else {
             userData.errCode = 3;
             userData.errMessage = 'Wrong pass word';
           }
-        }else {
+        } else {
           userData.errCode = 2;
           userData.errMessage = `User's not found~`
         }
@@ -60,6 +60,37 @@ let checkUserEmail = (userEmail) => {
   })
 }
 
+let getAllUsers = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let users = '';
+      if (userId === 'ALL') {
+        users = await db.User.findAll({
+          attributes: {
+            exclude: ["password"]
+          },
+          raw: true,
+        })
+      }
+      if (userId && userId !== 'ALL') {
+        users = await db.User.findOne({
+          attributes: {
+            exclude: ["password"]
+          },
+          where: { id: userId },
+          raw: true,
+        })
+      }
+      resolve(users);
+    } catch (e) {
+      reject(e);
+    }
+  })
+}
+
+
+
 module.exports = {
-  handleUserLogin: handleUserLogin
+  handleUserLogin: handleUserLogin,
+  getAllUsers: getAllUsers,
 }

@@ -19,6 +19,7 @@ let initWebRoutes = (app) => {
   
   // tạo router đặt tên api để phân biệt
   router.post("/api/login", userController.handleLogin);
+  router.get("/api/get-all-users", userController.handleGetAllUsers);
   //rest api
   return app.use("/", router);
   // sẽ sử dụng các router được định nghĩa
