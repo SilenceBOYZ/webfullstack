@@ -151,7 +151,6 @@ let deleteUser = (userId) => {
           id: userId
         },
       });
-      console.log("delete");
       resolve({
         errCode: 0,
         message: "A user have been remove the system"
@@ -165,6 +164,12 @@ let deleteUser = (userId) => {
 let updateUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
+      if (!data.id) {
+        resolve({
+          errCode: 2,
+          errMessage: "Missing required paramaters"
+        })
+      }
       let user = await db.User.findOne({
         where: { id: data.id }, raw: false
       })
