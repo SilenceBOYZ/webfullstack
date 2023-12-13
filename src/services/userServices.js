@@ -108,24 +108,26 @@ let createNewUser = (data) => {
       if (check === true) {
         resolve({
           errCode: 1,
-          message: "Your email is already exist, pls create new email!"
+          errMessage: "Your email is already exist, pls create new email!"
         })
+      } else {
+        let hashPasswordFromBrcypt = await hashUserPassword(data.password)
+        await db.User.create({
+          email: data.email,
+          password: hashPasswordFromBrcypt,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          address: data.address,
+          phonenumber: data.phonenumber,
+          gender: data.gender === '1' ? true : false,
+          roleId: data.roleId,
+        })
+        resolve({
+          errCode: 0,
+          message: "Create user have been succeed"
+        });
       }
-      let hashPasswordFromBrcypt = await hashUserPassword(data.password)
-      await db.User.create({
-        email: data.email,
-        password: hashPasswordFromBrcypt,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        address: data.address,
-        phonenumber: data.phonenumber,
-        gender: data.gender === '1' ? true : false,
-        roleId: data.roleId,
-      })
-      resolve({
-        errCode: 0,
-        message: "Create user have been succeed"
-      });
+
     } catch (e) {
       reject(e);
     }
